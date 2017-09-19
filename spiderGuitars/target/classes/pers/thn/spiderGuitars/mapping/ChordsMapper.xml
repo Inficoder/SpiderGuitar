@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+    
+<mapper namespace="pers.thn.spiderGuitars.dao.ChordsMapper">
+
+   <select id="getIdByTitle" resultType="java.lang.String">
+    	select g_id from chords where g_title = #{g_title}
+   </select>
+   <select id="getRepeatData" resultType="pers.thn.spiderGuitars.entity.DelRepeatClass">
+      	select g_title,count(*) as count from chords group by g_title having count>1; 
+   </select>  
+   <select id="getGcsCountByTitle" resultType="java.lang.Integer">
+   		select count(*) from chords where g_title = #{g_title}
+   </select>
+     
+   <select id="getGcsCounts" resultType="java.lang.Integer">
+   		select count(*) from chords
+   </select>
+    
+    <select id="getGuitarchordsById" resultType="pers.thn.spiderGuitars.entity.Chords">
+       select * from chords where g_id = #{g_id}
+    </select>
+    
+    <select id="getAllGuitarChords" resultType="pers.thn.spiderGuitars.entity.Chords">
+       select * from chords
+    </select>
+    
+    <select id="getGcLimits" resultType="pers.thn.spiderGuitars.entity.Chords">
+       select * from chords order by g_id asc limit #{index},#{count}
+    </select>
+    
+    <select id="getGcSearch" resultType="pers.thn.spiderGuitars.entity.Chords">
+       select * from chords where g_title like #{g_title}
+    </select>
+    
+       
+   <insert id="addGc" keyProperty="id" useGeneratedKeys="false">
+       insert into chords(g_title,g_image,g_url,g_source,g_type,g_kind) values(#{g_title},#{g_image},#{g_url},#{g_source},#{g_type},#{g_kind})
+   </insert>
+   
+   <update id="updateGc"  keyProperty="id" useGeneratedKeys="false">
+       update chords  set g_title = #{g_title} , g_image = #{g_image},g_url = #{g_url},g_source = #{g_source},g_type = #{g_type},g_kind = #{g_kind} where g_id = #{g_id}
+   </update>
+   
+   <delete id="delGc">
+       delete from chords where g_id = #{g_id}
+   </delete>
+   
+</mapper>

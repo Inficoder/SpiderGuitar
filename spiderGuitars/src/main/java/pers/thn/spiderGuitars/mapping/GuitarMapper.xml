@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pers.thn.spiderGuitars.dao.GuitarMapper">
+    
+<!--     public Guitarchords getGuitarchordsById(Integer id);
+	public List<Guitarchords> getAllGuitarChords();
+	
+    public boolean addGc(@Param("title") String title , @Param("image") String image, @Param("other") String other);
+    public boolean updateGc(@Param("title") String title , @Param("image") String image, @Param("other") String other);
+    public boolean delGc(Integer id);
+    
+    public List<Guitarchords> getGcLimits(Integer index , Integer count);
+    public List<Guitarchords> getGcSearch(String name);
+    public List<Integer> getIdByTitle(Integer id);
+     -->
+
+   <select id="getIdByTitle" resultType="java.lang.String">
+    	select id from dw where title = #{title}
+   </select>
+   <select id="getRepeatData" resultType="pers.thn.spiderGuitars.entity.DelRepeatClass">
+      	select title,count(*) as count from dw group by title having count>1; 
+   </select>  
+   <select id="getGcsCountByTitle" resultType="java.lang.Integer">
+   		select count(*) from dw where title = #{title}
+   </select>
+     
+   <select id="getGcsCounts" resultType="java.lang.Integer">
+   		select count(*) from dw
+   </select>
+    
+    <select id="getGuitarchordsById" resultType="pers.thn.spiderGuitars.entity.Guitarchords">
+       select * from dw where id = #{id}
+    </select>
+    
+    <select id="getAllGuitarChords" resultType="pers.thn.spiderGuitars.entity.Guitarchords">
+       select * from dw
+    </select>
+    
+    <select id="getGcLimits" resultType="pers.thn.spiderGuitars.entity.Guitarchords">
+       select * from dw order by id asc limit #{index},#{count}
+    </select>
+    
+    <select id="getGcSearch" resultType="pers.thn.spiderGuitars.entity.Guitarchords">
+       select * from dw where title like #{title}
+    </select>
+    
+       
+   <insert id="addGc" keyProperty="id" useGeneratedKeys="false">
+       insert into dw(title,image,other) values(#{title},#{image},#{other})
+   </insert>
+   
+   <update id="updateGc"  keyProperty="id" useGeneratedKeys="false">
+       update dw set title = #{title} , image = #{image},other = #{other} where id = #{id}
+   </update>
+   
+   <delete id="delGc">
+       delete from dw where id = #{id}
+   </delete>
+   
+</mapper>
